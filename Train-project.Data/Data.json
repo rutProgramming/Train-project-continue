@@ -1,0 +1,108 @@
+{
+
+  "Employees": [
+    {
+      "EmployeeCode": 1,
+      "EmployeeId": "123456789",
+      "EmployeeName": "John Doe",
+      "EmployeeAddress": "123 Main Street, Cityville",
+      "EmployeType": "driver",
+      "EmployeePhone": "123-456-7890",
+      "Salary": 50000,
+      "EmployedFrom": "2020-01-15T00:00:00"
+    },
+    {
+      "EmployeeCode": 2,
+      "EmployeeId": "987654321",
+      "EmployeeName": "Jane Smith",
+      "EmployeeAddress": "456 Elm Street, Townsville",
+      "EmployeType": "cleaner",
+      "EmployeePhone": "987-654-3210",
+      "Salary": 30000,
+      "EmployedFrom": "2019-06-01T00:00:00"
+    }
+  ],
+
+  "PublicInquiries": [
+    {
+      "InquiryId": 1,
+      "DriverId": 1,
+      "DateAndTime": "2024-11-20T10:30:00",
+      "DescriptionInquiry": "Delayed train",
+      "StatusInquiry": false,
+      "TreatedBy": 2,
+      "ComplainantsName": "Alice Johnson",
+      "ComplainantsPhone": "555-123-4567"
+    },
+    {
+      "InquiryId": 2,
+      "DriverId": 1,
+      "DateAndTime": "2024-11-21T15:00:00",
+      "DescriptionInquiry": "Lost item report",
+      "StatusInquiry": true,
+      "TreatedBy": 1,
+      "ComplainantsName": "Bob Brown",
+      "ComplainantsPhone": "555-987-6543"
+    }
+  ],
+  "Stations": [
+    {
+      "StationID": 1,
+      "StationName": "Central Station",
+      "StationAddress": "789 Oak Street",
+      "StationCity": "Metroville",
+      "LocationGPSCoordinates": "40.7128, -74.0060",
+      "StationType": "UrbanStation",
+      "NumberOfPlatforms": 5
+    },
+    {
+      "StationID": 2,
+      "StationName": "North Station",
+      "StationAddress": "123 Pine Street",
+      "StationCity": "Northville",
+      "LocationGPSCoordinates": "41.7128, -75.0060",
+      "StationType": "IntercityStation",
+      "NumberOfPlatforms": 3
+    }
+  ],
+  "Trains": [
+    {
+      "TrainID": 1,
+      "TrainLine": 101,
+      "NumberOfCars": 10,
+      "TrainStatus": true,
+      "RegularRoute": "Central Station to North Station",
+      "Model": "Express 3000",
+      "ServiceDate": "2023-05-01T00:00:00"
+    },
+    {
+      "TrainID": 2,
+      "TrainLine": 102,
+      "NumberOfCars": 8,
+      "TrainStatus": false,
+      "RegularRoute": "Central Station to South Station",
+      "Model": "Bullet 5000",
+      "ServiceDate": "2022-08-15T00:00:00"
+    }
+  ],
+  "TrainRoutes": [
+    {
+      "IdRoute": 1,
+      "Driver": 1,
+      "Train": 1,
+      "Station": 1,
+      "FirstTrain": "2024-11-26T06:00:00",
+      "LastTrain": "2024-11-26T22:00:00",
+      "SubstituteDriver": 2
+    },
+    {
+      "IdRoute": 2,
+      "Driver": 2,
+      "Train": 2,
+      "Station": 2,
+      "FirstTrain": "2024-11-26T07:00:00",
+      "LastTrain": "2024-11-26T21:00:00",
+      "SubstituteDriver": 1
+    }
+  ]
+}
