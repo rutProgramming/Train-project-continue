@@ -1,9 +1,11 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Train_project.API.Models;
 using Train_project.Core.Entities;
 using Train_project.Core.IRepositories;
 using Train_project.Core.IServices;
@@ -14,20 +16,24 @@ namespace Train_project.Service.Services
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IRepositoryManager _repositoryManager;
-        public EmployeeService(IEmployeeRepository employeeEntity, IRepositoryManager repositoryManager)
+        private readonly IMapper _mapper;
+
+        public EmployeeService(IEmployeeRepository employeeEntity, IRepositoryManager repositoryManager, IMapper mapper)
         {
             _employeeRepository = employeeEntity;
             _repositoryManager = repositoryManager;
-
+            _mapper = mapper;
         }
 
-        public IEnumerable<EmployeeEntity> GetAllEmployees()
+        public IEnumerable<EmployeeDto> GetAllEmployees()
         {
-            return _employeeRepository.GetAll();
+            IEnumerable<EmployeeEntity> employees= _employeeRepository.GetAll();
+            return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
         }
-        public EmployeeEntity? GetEmployeeById(int id)
+        public EmployeeDto? GetEmployeeById(int id)
         {
-            return _employeeRepository.GetById(id);
+            var empoyee = _employeeRepository.GetById(id);
+            return _mapper.Map<EmployeeDto>(empoyee);
         }
         public EmployeeEntity AddEmployee(EmployeeEntity employee)
         {

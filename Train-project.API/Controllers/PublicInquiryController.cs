@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Train_project.API.Models;
 using Train_project.Core.Entities;
 using Train_project.Core.IServices;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -16,17 +17,17 @@ namespace Train_project.API.Controllers
         }
         // GET: api/<PublicInquiryController>
         [HttpGet]
-        public ActionResult<IEnumerable<PublicInquiryEntity>> Get()
+        public ActionResult<IEnumerable<PublicInquiryDto>> Get()
         {
             return _publicInquityService.GetAllPublicInquiries().ToList();
         }
 
         // GET api/<PublicInquiryController>/5
         [HttpGet("{id}")]
-        public ActionResult<PublicInquiryEntity> Get(int id)
+        public ActionResult<PublicInquiryDto> Get(int id)
         {
             if (id<=0) return BadRequest();
-            PublicInquiryEntity? publicInquiry = _publicInquityService.GetPublicInquiryById(id);
+            PublicInquiryDto? publicInquiry = _publicInquityService.GetPublicInquiryById(id);
             if (publicInquiry == null)
             {
                 return NotFound();

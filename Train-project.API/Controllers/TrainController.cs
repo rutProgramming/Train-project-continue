@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Train_project.API.Models;
 using Train_project.Core.Entities;
 using Train_project.Core.IServices;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -16,7 +17,7 @@ namespace Train_project.API.Controllers
         }
         // GET: api/<TrainController>
         [HttpGet]
-        public ActionResult<IEnumerable<TrainEntity>> Get()
+        public ActionResult<IEnumerable<TrainDto>> Get()
         {
             return _trainService.GetAllTrains().ToList();
             
@@ -24,10 +25,10 @@ namespace Train_project.API.Controllers
 
         // GET api/<TrainController>/5
         [HttpGet("{id}")]
-        public ActionResult<TrainEntity> Get(int id)
+        public ActionResult<TrainDto> Get(int id)
         {
             if (id<=0) return BadRequest();
-            TrainEntity? train = _trainService.GetTrainById(id);
+            TrainDto? train = _trainService.GetTrainById(id);
             if (train == null)
             {
                 return NotFound();

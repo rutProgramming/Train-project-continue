@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Cors.Infrastructure;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Train_project.API.Models;
 using Train_project.Core.Entities;
 using Train_project.Core.IServices;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,24 +12,25 @@ namespace Train_project.API.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        readonly IEmployeeService _employeeService;
+        private readonly IEmployeeService _employeeService;
         public EmployeeController(IEmployeeService employeeService)
         {
             _employeeService = employeeService;
         }
         // GET: api/<EmployeeController>
         [HttpGet]
-        public ActionResult<IEnumerable<EmployeeEntity>> Get()
+        public ActionResult<IEnumerable<EmployeeDto>> Get()
         {
             return _employeeService.GetAllEmployees().ToList();
         }
 
         // GET api/<EmployeeController>/5
         [HttpGet("{id}")]
-        public ActionResult<EmployeeEntity> Get(int id)
+        public ActionResult<EmployeeDto> Get(int id)
         {
+
             if (id<=0) return BadRequest();
-            EmployeeEntity? employee = _employeeService.GetEmployeeById(id);
+            EmployeeDto? employee = _employeeService.GetEmployeeById(id);
             if (employee == null)
             {
                 return NotFound();
@@ -37,7 +40,6 @@ namespace Train_project.API.Controllers
 
         // POST api/<EmployeeController>
         [HttpPost]
-        //what if its failed in valid data but u want send it back
         public ActionResult<EmployeeEntity> Post([FromBody] EmployeeEntity employee)
         {
             if (employee == null)

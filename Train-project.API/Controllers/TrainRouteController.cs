@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Train_project.API.Models;
 using Train_project.Core.Entities;
 using Train_project.Core.IServices;
 
@@ -17,17 +18,17 @@ namespace Train_project.API.Controllers
         }
         // GET: api/<TrainRouteController>
         [HttpGet]
-        public ActionResult<IEnumerable<TrainRouteEntity>> Get()
+        public ActionResult<IEnumerable<TrainRoutDto>> Get()
         {
            return _trainRouteService.GetAllTrainRoutes().ToList();
         }
 
         // GET api/<TrainRouteController>/5
         [HttpGet("{id}")]
-        public ActionResult<TrainRouteEntity> Get(int id)
+        public ActionResult<TrainRoutDto> Get(int id)
         {
             if (id<=0) return BadRequest();
-            TrainRouteEntity? trainRoute = _trainRouteService.GetTrainRouteById(id);
+            TrainRoutDto? trainRoute = _trainRouteService.GetTrainRouteById(id);
             if (trainRoute == null)
             {
                 return NotFound();

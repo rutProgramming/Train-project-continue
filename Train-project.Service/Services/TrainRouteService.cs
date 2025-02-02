@@ -1,8 +1,10 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Train_project.API.Models;
 using Train_project.Core.Entities;
 using Train_project.Core.IRepositories;
 using Train_project.Core.IServices;
@@ -13,20 +15,23 @@ namespace Train_project.Service.Services
     {
         private readonly ITrainRouteRepository _trainRouteRepository;
         private readonly IRepositoryManager _repositoryManager;
-        public TrainRouteService(ITrainRouteRepository trainRouteRepository, IRepositoryManager repositoryManager)
+        private readonly IMapper _mapper;
+        public TrainRouteService(ITrainRouteRepository trainRouteRepository, IRepositoryManager repositoryManager,IMapper mapper)
         {
             _trainRouteRepository = trainRouteRepository;
             _repositoryManager = repositoryManager;
-
+            _mapper = mapper;
         }
-        public IEnumerable<TrainRouteEntity> GetAllTrainRoutes()
+        public IEnumerable<TrainRoutDto> GetAllTrainRoutes()
         {
-            return _trainRouteRepository.GetAll();
+            IEnumerable<TrainRouteEntity> trainRoutes= _trainRouteRepository.GetAll();
+            return _mapper.Map<IEnumerable<TrainRoutDto>>(trainRoutes);
         }
 
-        public TrainRouteEntity? GetTrainRouteById(int id)
+        public TrainRoutDto? GetTrainRouteById(int id)
         {
-            return _trainRouteRepository.GetById(id);
+            TrainRouteEntity trainRoute= _trainRouteRepository.GetById(id);
+            return _mapper.Map<TrainRoutDto>(trainRoute);
 
         }
         public TrainRouteEntity AddTrainRoute(TrainRouteEntity trainRoute)

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Train_project.API.Models;
 using Train_project.Core.Entities;
 using Train_project.Core.IRepositories;
 using Train_project.Core.IServices;
@@ -13,19 +15,24 @@ namespace Train_project.Service.Services
     {
         private readonly ITrainRepository _trainRepository;
         private readonly IRepositoryManager _repositoryManager;
-        public TrainService(ITrainRepository trainRepository,IRepositoryManager repositoryManager)
+        private readonly IMapper _mapper;
+        public TrainService(ITrainRepository trainRepository,IRepositoryManager repositoryManage,IMapper mapper)
         {
             _trainRepository = trainRepository;
-            _repositoryManager = repositoryManager;
+            _repositoryManager = repositoryManage;
+            _mapper = mapper;
         }
-        public IEnumerable<TrainEntity> GetAllTrains()
+        public IEnumerable<TrainDto> GetAllTrains()
         {
-            return _trainRepository.GetAll();
+            IEnumerable< TrainEntity> train= _trainRepository.GetAll();
+            return _mapper.Map<IEnumerable<TrainDto>>(train);
         }
 
-        public TrainEntity? GetTrainById(int id)
+        public TrainDto? GetTrainById(int id)
         {
-            return _trainRepository.GetById(id);
+            TrainEntity train = _trainRepository.GetById(id);
+            return _mapper.Map<TrainDto>(train);
+
 
         }
         public TrainEntity AddTrain(TrainEntity train)

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Train_project.API.Models;
 using Train_project.Core.Entities;
 using Train_project.Core.IRepositories;
 using Train_project.Core.IServices;
@@ -13,20 +15,23 @@ namespace Train_project.Service.Services
     {
        private readonly IPublicInquiryRepository _publicInquiryRepository;
         private readonly IRepositoryManager _repositoryManager;
-        public PublicInquiryService(IPublicInquiryRepository publicInquiryRepository, IRepositoryManager repositoryManager)
+        private readonly IMapper _mapper;
+        public PublicInquiryService(IPublicInquiryRepository publicInquiryRepository, IRepositoryManager repositoryManager,IMapper mapper)
         {
             _publicInquiryRepository = publicInquiryRepository;
             _repositoryManager = repositoryManager;
-
+            _mapper = mapper;
         }
-        public IEnumerable<PublicInquiryEntity> GetAllPublicInquiries()
+        public IEnumerable<PublicInquiryDto> GetAllPublicInquiries()
         {
-            return _publicInquiryRepository.GetAll();
+            IEnumerable<PublicInquiryEntity> publicInquiries= _publicInquiryRepository.GetAll();
+            return _mapper.Map<IEnumerable<PublicInquiryDto>>(publicInquiries);
         }
         
-        public PublicInquiryEntity? GetPublicInquiryById(int id)
+        public PublicInquiryDto? GetPublicInquiryById(int id)
         {
-            return _publicInquiryRepository.GetById(id);
+            PublicInquiryEntity publicInquiry =_publicInquiryRepository.GetById(id);
+            return _mapper.Map<PublicInquiryDto>(publicInquiry);
            
         }
         public PublicInquiryEntity AddPublicInquiry(PublicInquiryEntity publicInquiry)
