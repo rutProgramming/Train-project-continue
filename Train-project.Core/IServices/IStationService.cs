@@ -13,9 +13,9 @@ namespace Train_project.Core.IServices
     {
        IEnumerable<StationDto> GetAllStations();
         StationDto? GetStationById(int id);
-       StationEntity AddStation(StationEntity station);
-       StationEntity UpdateStation(int id, StationEntity station);
+        StationDto AddStation(StationDto station);
+        StationDto UpdateStation(int id, StationDto station);
        bool DeleteStation(int id);
-       bool ValidData(StationEntity station);
+       bool ValidData(StationDto station);
     }
 }

@@ -12,8 +12,8 @@ namespace Train_project.Core.IServices
     {
         IEnumerable<TrainDto> GetAllTrains();
         TrainDto? GetTrainById(int id);
-        TrainEntity AddTrain(TrainEntity train);
-        TrainEntity UpdateTrain(int id, TrainEntity train);
+        TrainDto AddTrain(TrainDto train);
+        TrainDto UpdateTrain(int id, TrainDto train);
         bool DeleteTrain(int id);
     }
 }

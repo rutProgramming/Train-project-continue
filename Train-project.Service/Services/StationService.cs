@@ -36,26 +36,30 @@ namespace Train_project.Service.Services
 
 
         }
-        public StationEntity AddStation(StationEntity station)
+        public StationDto AddStation(StationDto stationDto)
         {
-            StationEntity StationCheck = _stationRepository.GetById(station.Id);
-            if (StationCheck == null && ValidData(station))
+            var station = _stationRepository.GetById(stationDto.Id);
+            if (station== null && ValidData(stationDto))
             {
+                station=_mapper.Map<StationEntity>(stationDto);
                 _stationRepository.AddEntity(station);
                 _repositoryManager.save();
-                return station;
+                stationDto.Id = station.Id;
+                return stationDto;
             }
             return null;
         }
-        public StationEntity UpdateStation(int id, StationEntity station)
+        public StationDto UpdateStation(int id, StationDto stationDto)
         {
-            StationEntity StationCheck = _stationRepository.GetById(id);
+            var station = _stationRepository.GetById(id);
 
-            if (StationCheck != null && ValidData(station))
+            if (station!= null && ValidData(stationDto))
             {
+                station = _mapper.Map<StationEntity>(stationDto);
                 station = _stationRepository.UpdateStation(id, station);
                 _repositoryManager.save();
-                return station;
+                stationDto.Id = station.Id;
+                return stationDto;
 
             }
             return null;
@@ -71,7 +75,7 @@ namespace Train_project.Service.Services
             }
             return false;
         }
-        public bool ValidData(StationEntity station)
+        public bool ValidData(StationDto station)
         {
             return station.LocationGPSCoordinates == null || Valid.IsValidGPSCoordinates(station.LocationGPSCoordinates);
         }

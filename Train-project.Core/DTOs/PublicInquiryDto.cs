@@ -2,6 +2,8 @@
 {
     public class PublicInquiryDto
     {
+        public int Id { get; set; }
+
         public int DriverId { get; set; }
         public DateTime DateAndTime { get; set; }
         public string? Description { get; set; }

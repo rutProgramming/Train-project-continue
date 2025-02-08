@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Train_project.API.Models;
 using Train_project.Core.Entities;
 using Train_project.Core.IServices;
@@ -11,9 +12,12 @@ namespace Train_project.API.Controllers
     public class StationController : ControllerBase
     {
          readonly IStationService _stationService;
-        public StationController(IStationService stationService)
+        private readonly IMapper _mapper;
+
+        public StationController(IStationService stationService,IMapper mapper)
         {
             _stationService = stationService;
+            _mapper = mapper;
         }
         // GET: api/<StationController>
         [HttpGet]
@@ -37,23 +41,25 @@ namespace Train_project.API.Controllers
 
         // POST api/<StationController>
         [HttpPost]
-        public ActionResult<StationEntity> Post([FromBody] StationEntity station)
+        public ActionResult<StationDto> Post([FromBody] StationPostModal station)
         {
             if (station == null) return BadRequest();
-            station=_stationService.AddStation(station);
-            if (station==null) {return BadRequest();}
-            return station;
+            var stationDto=_mapper.Map<StationDto>(station);
+            stationDto = _stationService.AddStation(stationDto);
+            if (stationDto == null) {return BadRequest();}
+            return stationDto;
             
         }
 
         // PUT api/<StationController>/5
         [HttpPut("{id}")]
-        public ActionResult<StationEntity> Put(int id, [FromBody] StationEntity station)
+        public ActionResult<StationDto> Put(int id, [FromBody] StationPostModal station)
         {
-            station = _stationService.UpdateStation(id, station);
-            if (station!=null)
+            var stationDto = _mapper.Map<StationDto>(station);
+            stationDto = _stationService.UpdateStation(id, stationDto);
+            if (stationDto != null)
             {
-                return station;
+                return stationDto;
             }
             return NotFound();
         }

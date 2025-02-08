@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Train_project.API.Models;
 using Train_project.Core.Entities;
 using Train_project.Core.IServices;
@@ -10,10 +11,13 @@ namespace Train_project.API.Controllers
     [ApiController]
     public class TrainController : ControllerBase
     {
-         readonly ITrainService _trainService;
-        public TrainController(ITrainService trainService)
+        private readonly ITrainService _trainService;
+        private readonly IMapper _mapper;
+
+        public TrainController(ITrainService trainService,IMapper mapper)
         {
             _trainService = trainService;
+            _mapper = mapper;
         }
         // GET: api/<TrainController>
         [HttpGet]
@@ -38,27 +42,28 @@ namespace Train_project.API.Controllers
 
         // POST api/<TrainController>
         [HttpPost]
-        public ActionResult<TrainEntity> Post([FromBody] TrainEntity train)
+        public ActionResult<TrainDto> Post([FromBody] TrainPostModel train)
         {
             if (train == null) return BadRequest();
-            train = _trainService.AddTrain(train);
-            if (train==null)
+            var trainDto=_mapper.Map<TrainDto>(train);
+            trainDto = _trainService.AddTrain(trainDto);
+            if (trainDto == null)
             {
                 return BadRequest();
             }
-            return train;
+            return trainDto;
 
         }
 
         // PUT api/<TrainController>/5
         [HttpPut("{id}")]
-        public ActionResult<TrainEntity> Put(int id, [FromBody] TrainEntity train)
+        public ActionResult<TrainDto> Put(int id, [FromBody] TrainPostModel train)
         {
-            
-            train = _trainService.UpdateTrain(id, train);
-            if (train!=null)
+            var trainDto = _mapper.Map<TrainDto>(train);
+            trainDto = _trainService.UpdateTrain(id, trainDto);
+            if (trainDto != null)
             {
-                return train;
+                return trainDto;
             }
             return NotFound();
         }

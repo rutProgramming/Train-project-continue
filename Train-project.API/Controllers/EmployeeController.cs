@@ -13,9 +13,12 @@ namespace Train_project.API.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
-        public EmployeeController(IEmployeeService employeeService)
+        private readonly IMapper _mapper;
+        public EmployeeController(IEmployeeService employeeService, IMapper mapper)
         {
             _employeeService = employeeService;
+            _mapper = mapper;
+
         }
         // GET: api/<EmployeeController>
         [HttpGet]
@@ -40,25 +43,27 @@ namespace Train_project.API.Controllers
 
         // POST api/<EmployeeController>
         [HttpPost]
-        public ActionResult<EmployeeEntity> Post([FromBody] EmployeeEntity employee)
+        public ActionResult<EmployeeDto> Post([FromBody] EmployeePostModel employee)
         {
             if (employee == null)
                 return BadRequest();
-            employee = _employeeService.AddEmployee(employee);
-            if (employee==null)
+            var employeeDto= _mapper.Map<EmployeeDto>(employee);
+            employeeDto = _employeeService.AddEmployee(employeeDto);
+            if (employeeDto == null)
                 return BadRequest();
-            return employee;
+            return employeeDto;
 
         }
 
         // PUT api/<EmployeeController>/5
         [HttpPut("{id}")]
-        public ActionResult<EmployeeEntity> Put(int id, [FromBody] EmployeeEntity employee)
+        public ActionResult<EmployeeDto> Put(int id, [FromBody] EmployeePostModel employee)
         {
-            employee = _employeeService.UpdateEmployee(id, employee);
-            if (employee!=null)
+            var employeeDto = _mapper.Map<EmployeeDto>(employee);
+            employeeDto = _employeeService.UpdateEmployee(id, employeeDto);
+            if (employeeDto != null)
             {
-                return  employee;
+                return employeeDto;
             }
             return NotFound();
         }

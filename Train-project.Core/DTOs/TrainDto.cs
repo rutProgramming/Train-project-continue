@@ -2,6 +2,7 @@
 {
     public class TrainDto
     {
+        public int Id { get; set; }
         public int Line { get; set; }
         public int NumberOfCars { get; set; }
         public bool? Status { get; set; }

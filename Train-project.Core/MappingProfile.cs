@@ -17,7 +17,7 @@ namespace Train_project.Core
             CreateMap<PublicInquiryEntity, PublicInquiryDto>().ReverseMap();
             CreateMap<StationEntity, StationDto>().ReverseMap();
             CreateMap<TrainEntity, TrainDto>().ReverseMap();
-            CreateMap<TrainRouteEntity, TrainRoutDto>().ReverseMap();
+            CreateMap<TrainRouteEntity, TrainRouteDto>().ReverseMap();
         }
     }
 }

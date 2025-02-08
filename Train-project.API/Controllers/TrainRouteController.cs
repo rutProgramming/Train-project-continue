@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Train_project.API.Models;
 using Train_project.Core.Entities;
 using Train_project.Core.IServices;
@@ -11,24 +12,27 @@ namespace Train_project.API.Controllers
     [ApiController]
     public class TrainRouteController : ControllerBase
     {
-        readonly ITrainRouteService _trainRouteService;
-        public TrainRouteController(ITrainRouteService trainRouteService)
+        private readonly ITrainRouteService _trainRouteService;
+        private readonly IMapper _mapper;
+
+        public TrainRouteController(ITrainRouteService trainRouteService,IMapper mapper)
         {
-                _trainRouteService= trainRouteService;
+            _trainRouteService= trainRouteService;
+            _mapper=mapper;
         }
         // GET: api/<TrainRouteController>
         [HttpGet]
-        public ActionResult<IEnumerable<TrainRoutDto>> Get()
+        public ActionResult<IEnumerable<TrainRouteDto>> Get()
         {
            return _trainRouteService.GetAllTrainRoutes().ToList();
         }
 
         // GET api/<TrainRouteController>/5
         [HttpGet("{id}")]
-        public ActionResult<TrainRoutDto> Get(int id)
+        public ActionResult<TrainRouteDto> Get(int id)
         {
             if (id<=0) return BadRequest();
-            TrainRoutDto? trainRoute = _trainRouteService.GetTrainRouteById(id);
+            TrainRouteDto? trainRoute = _trainRouteService.GetTrainRouteById(id);
             if (trainRoute == null)
             {
                 return NotFound();
@@ -38,22 +42,24 @@ namespace Train_project.API.Controllers
 
         // POST api/<TrainRouteController>
         [HttpPost]
-        public ActionResult<TrainRouteEntity> Post([FromBody] TrainRouteEntity trainRoute)
+        public ActionResult<TrainRouteDto> Post([FromBody] TrainRoutePostModal trainRoute)
         {
             if (trainRoute == null) return BadRequest();
-            trainRoute = _trainRouteService.AddTrainRoute(trainRoute);
-            if (trainRoute==null) return BadRequest();
-            return trainRoute;
+            var trainRouteDto=_mapper.Map<TrainRouteDto>(trainRoute);
+            trainRouteDto = _trainRouteService.AddTrainRoute(trainRouteDto);
+            if (trainRouteDto ==null) return BadRequest();
+            return trainRouteDto;
         }
 
         // PUT api/<TrainRouteController>/5
         [HttpPut("{id}")]
-        public ActionResult<TrainRouteEntity> Put(int id, [FromBody] TrainRouteEntity trainRoute)
+        public ActionResult<TrainRouteDto> Put(int id, [FromBody] TrainRoutePostModal trainRoute)
         {
-            trainRoute = _trainRouteService.UpdateTrainRoute(id, trainRoute);
-            if (trainRoute!=null)
+            var trainRouteDto = _mapper.Map<TrainRouteDto>(trainRoute);
+            trainRouteDto = _trainRouteService.UpdateTrainRoute(id, trainRouteDto);
+            if (trainRouteDto != null)
             {
-                return trainRoute;
+                return trainRouteDto;
             }
             return NotFound();
         }

@@ -1,7 +1,8 @@
 ﻿namespace Train_project.API.Models
 {
-    public class TrainRoutDto
+    public class TrainRouteDto
     {
+        public int Id { get; set; }
         public int DriverId { get; set; }
         public int TrainId { get; set; }
         public int StationId { get; set; }

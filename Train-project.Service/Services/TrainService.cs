@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,25 +36,29 @@ namespace Train_project.Service.Services
 
 
         }
-        public TrainEntity AddTrain(TrainEntity train)
+        public TrainDto AddTrain(TrainDto trainDto)
         {
-            TrainEntity TrainCheck = _trainRepository.GetById(train.Id);
-            if (TrainCheck == null)
+            var train = _trainRepository.GetById(trainDto.Id);
+            if (train== null)
             {
+                train=_mapper.Map<TrainEntity>(trainDto);
                 _trainRepository.AddEntity(train);
                 _repositoryManager.save();
-                return train;
+                trainDto.Id = train.Id;
+                return trainDto;
             }
             return null;
         }
-        public TrainEntity UpdateTrain(int id, TrainEntity train)
+        public TrainDto UpdateTrain(int id, TrainDto trainDto)
         {
-            TrainEntity TrainCheck = _trainRepository.GetById(id);
-            if (TrainCheck != null)
+            var train = _trainRepository.GetById(id);
+            if (train != null)
             {
+                train = _mapper.Map<TrainEntity>(trainDto);
                 train = _trainRepository.UpdateTrain(id, train);
                 _repositoryManager.save();
-                return train;
+                trainDto.Id = train.Id;
+                return trainDto;
             }
             return null;
         }

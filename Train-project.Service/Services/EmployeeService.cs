@@ -35,24 +35,29 @@ namespace Train_project.Service.Services
             var empoyee = _employeeRepository.GetById(id);
             return _mapper.Map<EmployeeDto>(empoyee);
         }
-        public EmployeeEntity AddEmployee(EmployeeEntity employee)
+        public EmployeeDto AddEmployee(EmployeeDto employeeDto)
         {
-            EmployeeEntity employeeCheck = _employeeRepository.GetById(employee.Id);
-            if (employeeCheck == null && ValidData(employee))
+            var employee = _employeeRepository.GetById(employeeDto.Id);
+            if (employee== null && ValidData(employeeDto))
             {
+                employee= _mapper.Map<EmployeeEntity>(employeeDto);
                 _employeeRepository.AddEntity(employee);
                 _repositoryManager.save();
-                return employee;
+                employeeDto.Id = employee.Id;
+                return employeeDto;
             }
             return null;
         }
-        public EmployeeEntity UpdateEmployee(int id, EmployeeEntity employee)
+        public EmployeeDto UpdateEmployee(int id, EmployeeDto employeeDto)
         {
-            EmployeeEntity employeeCheck = _employeeRepository.GetById(id);
-            if (employeeCheck != null && ValidData(employee))
+            var employee = _employeeRepository.GetById(id);
+            if (employee != null && ValidData(employeeDto))
             {
-                employee= _employeeRepository.UpdateEmployee(id, employee);
+                employee = _mapper.Map<EmployeeEntity>(employeeDto);
+                employee = _employeeRepository.UpdateEmployee(id, employee);
                 _repositoryManager.save();
+                employeeDto.Id = employee.Id;
+                return employeeDto;
             }
             return null;
         }
@@ -67,7 +72,7 @@ namespace Train_project.Service.Services
             }
             return false;
         }
-        public bool ValidData(EmployeeEntity employee)
+        public bool ValidData(EmployeeDto employee)
         {
             return employee.Id<=0?true:Valid.IsIdValid(employee.Id.ToString()) && employee.Id<=0?true: Valid.IsIsraeliPhoneNumberValid(employee.Id.ToString());
         }

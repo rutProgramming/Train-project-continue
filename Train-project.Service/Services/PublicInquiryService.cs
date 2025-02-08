@@ -34,31 +34,35 @@ namespace Train_project.Service.Services
             return _mapper.Map<PublicInquiryDto>(publicInquiry);
            
         }
-        public PublicInquiryEntity AddPublicInquiry(PublicInquiryEntity publicInquiry)
+        public PublicInquiryDto AddPublicInquiry(PublicInquiryDto publicInquiryDto)
         {
-            PublicInquiryEntity publicInquiryCheck =_publicInquiryRepository.GetById(publicInquiry.Id);
-            if (publicInquiryCheck == null&&ValidData(publicInquiry))
+            var publicInquiry =_publicInquiryRepository.GetById(publicInquiryDto.Id);
+            if (publicInquiry == null&&ValidData(publicInquiryDto))
             {
-                 _publicInquiryRepository.AddEntity(publicInquiry);
+                publicInquiry = _mapper.Map<PublicInquiryEntity>(publicInquiryDto);
+                _publicInquiryRepository.AddEntity(publicInquiry);
                 _repositoryManager.save();
-                return publicInquiry;
+                publicInquiryDto.Id = publicInquiry.Id;
+                return publicInquiryDto;
             }
             return null;
         }
-        public PublicInquiryEntity UpdatePublicInquiry(int id, PublicInquiryEntity publicInquiry)
+        public PublicInquiryDto UpdatePublicInquiry(int id, PublicInquiryDto publicInquiryDto)
         {
-            PublicInquiryEntity publicInquiryCheck = _publicInquiryRepository.GetById(publicInquiry.Id);
-            if (publicInquiryCheck != null&&ValidData(publicInquiry))
+            var publicInquiry = _publicInquiryRepository.GetById(id);
+            if (publicInquiry != null&&ValidData(publicInquiryDto))
             {
+                publicInquiry= _mapper.Map<PublicInquiryEntity>( publicInquiryDto);
                 publicInquiry= _publicInquiryRepository.UpdatePublicInquiry(id,publicInquiry);
                 _repositoryManager.save();
-                return publicInquiry;
+                publicInquiryDto.Id = publicInquiry.Id;
+                return publicInquiryDto;
             }
             return null;
         }
         public bool DeletePublicInquiry(int id)
         {
-            PublicInquiryEntity publicInquiryCheck = _publicInquiryRepository.GetById(id);
+            var publicInquiryCheck = _publicInquiryRepository.GetById(id);
             if (publicInquiryCheck != null)
             {
                 _publicInquiryRepository.DeleteEntity(id);
@@ -68,7 +72,7 @@ namespace Train_project.Service.Services
             }
             return false;
         }
-        public bool ValidData(PublicInquiryEntity publicInquiry)
+        public bool ValidData(PublicInquiryDto publicInquiry)
         {
             return string.IsNullOrEmpty(publicInquiry.ComplainantsPhone)?true:Valid.IsIsraeliPhoneNumberValid(publicInquiry.ComplainantsPhone);
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Train_project.API.Models;
 using Train_project.Core.Entities;
 using Train_project.Core.IServices;
@@ -10,10 +11,13 @@ namespace Train_project.API.Controllers
     [ApiController]
     public class PublicInquiryController : ControllerBase
     {
-        readonly IPublicInquiryService _publicInquityService;
-        public PublicInquiryController(IPublicInquiryService publicInquityService)
+       private readonly IPublicInquiryService _publicInquityService;
+       private readonly IMapper _mapper;
+
+        public PublicInquiryController(IPublicInquiryService publicInquityService,IMapper mapper)
         {
             _publicInquityService = publicInquityService;
+            _mapper = mapper;
         }
         // GET: api/<PublicInquiryController>
         [HttpGet]
@@ -37,25 +41,27 @@ namespace Train_project.API.Controllers
 
         // POST api/<PublicInquiryController>
         [HttpPost]
-        public ActionResult<PublicInquiryEntity> Post([FromBody] PublicInquiryEntity publicInquiry)
+        public ActionResult<PublicInquiryDto> Post([FromBody] PublicInquiryPostModal publicInquiry)
         {
             if (publicInquiry == null)
                 return BadRequest();
-             publicInquiry= _publicInquityService.AddPublicInquiry(publicInquiry);
-             if (publicInquiry==null)
+            var publicInquiryDto=_mapper.Map<PublicInquiryDto>(publicInquiry);
+            publicInquiryDto = _publicInquityService.AddPublicInquiry(publicInquiryDto);
+             if (publicInquiryDto == null)
                 return BadRequest();
-            return publicInquiry;
+            return publicInquiryDto;
 
         }
 
         // PUT api/<PublicInquiryController>/5
         [HttpPut("{id}")]
-        public ActionResult<PublicInquiryEntity> Put(int id, [FromBody] PublicInquiryEntity publicInquiry)
+        public ActionResult<PublicInquiryDto> Put(int id, [FromBody] PublicInquiryPostModal publicInquiry)
         {
-            publicInquiry = _publicInquityService.UpdatePublicInquiry(id, publicInquiry);
-            if (publicInquiry!=null)
+            var publicInquiryDto = _mapper.Map<PublicInquiryDto>(publicInquiry);
+            publicInquiryDto = _publicInquityService.UpdatePublicInquiry(id, publicInquiryDto);
+            if (publicInquiryDto != null)
             {
-                return publicInquiry;
+                return publicInquiryDto;
             }
             return NotFound();
         }

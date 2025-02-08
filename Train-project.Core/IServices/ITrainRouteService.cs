@@ -10,11 +10,11 @@ namespace Train_project.Core.IServices
 {
     public interface ITrainRouteService
     {
-        IEnumerable<TrainRoutDto> GetAllTrainRoutes();
-        TrainRoutDto? GetTrainRouteById(int id);
-        TrainRouteEntity AddTrainRoute(TrainRouteEntity trainRoute);
-        TrainRouteEntity UpdateTrainRoute(int id, TrainRouteEntity trainRoute);
+        IEnumerable<TrainRouteDto> GetAllTrainRoutes();
+        TrainRouteDto? GetTrainRouteById(int id);
+        TrainRouteDto AddTrainRoute(TrainRouteDto trainRoute);
+        TrainRouteDto UpdateTrainRoute(int id, TrainRouteDto trainRoute);
         bool DeleteTrainRoute(int id);
-        bool ValidData(TrainRouteEntity trainRoute);
+        bool ValidData(TrainRouteDto trainRoute);
     }
 }

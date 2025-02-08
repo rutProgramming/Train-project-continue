@@ -22,39 +22,43 @@ namespace Train_project.Service.Services
             _repositoryManager = repositoryManager;
             _mapper = mapper;
         }
-        public IEnumerable<TrainRoutDto> GetAllTrainRoutes()
+        public IEnumerable<TrainRouteDto> GetAllTrainRoutes()
         {
             IEnumerable<TrainRouteEntity> trainRoutes= _trainRouteRepository.GetAll();
-            return _mapper.Map<IEnumerable<TrainRoutDto>>(trainRoutes);
+            return _mapper.Map<IEnumerable<TrainRouteDto>>(trainRoutes);
         }
 
-        public TrainRoutDto? GetTrainRouteById(int id)
+        public TrainRouteDto? GetTrainRouteById(int id)
         {
             TrainRouteEntity trainRoute= _trainRouteRepository.GetById(id);
-            return _mapper.Map<TrainRoutDto>(trainRoute);
+            return _mapper.Map<TrainRouteDto>(trainRoute);
 
         }
-        public TrainRouteEntity AddTrainRoute(TrainRouteEntity trainRoute)
+        public TrainRouteDto AddTrainRoute(TrainRouteDto trainRouteDto)
         {
-            TrainRouteEntity TrainRouteCheck = _trainRouteRepository.GetById(trainRoute.Id);
-            if (TrainRouteCheck == null /*&& ValidData(trainRoute)*/)
+            var trainRoute = _trainRouteRepository.GetById(trainRouteDto.Id);
+            if (trainRoute == null && ValidData(trainRouteDto))
             {
+                trainRoute = _mapper.Map<TrainRouteEntity>(trainRouteDto);
                  _trainRouteRepository.AddEntity(trainRoute);
                 _repositoryManager.save();
-                return trainRoute;
+                trainRouteDto.Id = trainRoute.Id;
+                return trainRouteDto;
             }
             return null;
         }
 
-        public TrainRouteEntity UpdateTrainRoute(int id, TrainRouteEntity trainRoute)
+        public TrainRouteDto UpdateTrainRoute(int id, TrainRouteDto trainRouteDto)
         {
-            TrainRouteEntity TrainRouteCheck = _trainRouteRepository.GetById(id);
+            TrainRouteEntity trainRoute = _trainRouteRepository.GetById(id);
 
-            if (TrainRouteCheck != null && ValidData(trainRoute))
+            if (trainRoute != null && ValidData(trainRouteDto))
             {
+                trainRoute = _mapper.Map<TrainRouteEntity>(trainRouteDto);
                 trainRoute = _trainRouteRepository.UpdateTrainRoute(id, trainRoute);
                 _repositoryManager.save();
-                return trainRoute;
+                trainRouteDto.Id = trainRoute.Id;
+                return trainRouteDto;
             }
             return null;
         }
@@ -70,7 +74,7 @@ namespace Train_project.Service.Services
             return false;
         }
 
-        public bool ValidData(TrainRouteEntity trainRoute)
+        public bool ValidData(TrainRouteDto trainRoute)
         {
             return (trainRoute.FirstTrain == default || trainRoute.LastTrain == default) ? true : Valid.LastTimeAfterFirstTime(trainRoute.FirstTrain, trainRoute.LastTrain);
         }

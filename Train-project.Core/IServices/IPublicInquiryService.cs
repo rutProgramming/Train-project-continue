@@ -12,9 +12,9 @@ namespace Train_project.Core.IServices
     {
         IEnumerable<PublicInquiryDto> GetAllPublicInquiries();
         PublicInquiryDto? GetPublicInquiryById(int id);
-        PublicInquiryEntity AddPublicInquiry(PublicInquiryEntity publicInquity);
-        PublicInquiryEntity UpdatePublicInquiry(int id, PublicInquiryEntity publicInquity);
+        PublicInquiryDto AddPublicInquiry(PublicInquiryDto publicInquity);
+        PublicInquiryDto UpdatePublicInquiry(int id, PublicInquiryDto publicInquity);
         bool DeletePublicInquiry(int id);
-        bool ValidData(PublicInquiryEntity publicInquiry);
+        bool ValidData(PublicInquiryDto publicInquiry);
     }
 }

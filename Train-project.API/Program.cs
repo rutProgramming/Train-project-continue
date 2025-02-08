@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Text.Json.Serialization;
+using Train_project.API;
 using Train_project.Core;
 using Train_project.Core.IRepositories;
 using Train_project.Core.IServices;
@@ -32,7 +33,7 @@ builder.Services.AddDbContext<DataContext>(option =>
 {
     option.UseSqlServer("Data Source=LAPTOP-KOM2Q8SQ\\SQLEXPRESS;Initial Catalog=Train_project_DB;Integrated Security=true; TrustServerCertificate=True;");
 });
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAutoMapper(typeof(MappingProfile),typeof(MappingPrifilePostEntity));
 
 //builder.Services.AddControllers();
 builder.Services.AddControllers().AddJsonOptions(options =>

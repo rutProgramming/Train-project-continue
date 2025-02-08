@@ -4,6 +4,7 @@ namespace Train_project.API.Models
 {
     public class EmployeeDto
     {
+        public int Id { get; set; }
         public string Tz { get; set; }
         public string Name { get; set; }
         public string? Address { get; set; }

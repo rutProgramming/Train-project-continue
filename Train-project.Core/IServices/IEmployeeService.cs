@@ -12,9 +12,9 @@ namespace Train_project.Core.IServices
     {
         IEnumerable<EmployeeDto> GetAllEmployees();
         EmployeeDto? GetEmployeeById(int id);
-        EmployeeEntity AddEmployee(EmployeeEntity employee);
-        EmployeeEntity UpdateEmployee(int id, EmployeeEntity employee);
+        EmployeeDto AddEmployee(EmployeeDto employee);
+        EmployeeDto UpdateEmployee(int id, EmployeeDto employee);
         bool DeleteEmployee(int id);
-        bool ValidData(EmployeeEntity employee);
+        bool ValidData(EmployeeDto employee);
     }
 }
